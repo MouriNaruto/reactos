@@ -146,9 +146,10 @@ PcGetHarddiskConfigurationData(UCHAR DriveNumber, ULONG* pSize)
     }
 
     RtlZeroMemory(PartialResourceList, Size);
-    PartialResourceList->Version = 1;
-    PartialResourceList->Revision = 1;
+    PartialResourceList->Version  = ARC_VERSION;
+    PartialResourceList->Revision = ARC_REVISION;
     PartialResourceList->Count = 1;
+
     PartialResourceList->PartialDescriptors[0].Type =
         CmResourceTypeDeviceSpecific;
 //  PartialResourceList->PartialDescriptors[0].ShareDisposition =
@@ -211,8 +212,8 @@ DetectDockingStation(
 
     /* Initialize resource descriptor */
     RtlZeroMemory(PartialResourceList, Size);
-    PartialResourceList->Version = 0;
-    PartialResourceList->Revision = 0;
+    PartialResourceList->Version  = ARC_VERSION;
+    PartialResourceList->Revision = ARC_REVISION;
     PartialResourceList->Count = 1;
 
     /* Set device specific data */
@@ -311,9 +312,10 @@ DetectPnpBios(PCONFIGURATION_COMPONENT_DATA SystemKey, ULONG *BusNumber)
 
     /* Initialize resource descriptor */
     RtlZeroMemory(PartialResourceList, Size);
-    PartialResourceList->Version = 1;
-    PartialResourceList->Revision = 1;
+    PartialResourceList->Version  = ARC_VERSION;
+    PartialResourceList->Revision = ARC_REVISION;
     PartialResourceList->Count = 1;
+
     PartialResourceList->PartialDescriptors[0].Type =
         CmResourceTypeDeviceSpecific;
     PartialResourceList->PartialDescriptors[0].ShareDisposition =
@@ -693,8 +695,8 @@ DetectSerialPointerPeripheral(PCONFIGURATION_COMPONENT_DATA ControllerKey,
         }
 
         RtlZeroMemory(PartialResourceList, Size);
-        PartialResourceList->Version = 1;
-        PartialResourceList->Revision = 1;
+        PartialResourceList->Version  = ARC_VERSION;
+        PartialResourceList->Revision = ARC_REVISION;
         PartialResourceList->Count = 0;
 
         /* Create 'PointerPeripheral' key */
@@ -825,8 +827,8 @@ DetectSerialPorts(
 
         /* Initialize resource descriptor */
         RtlZeroMemory(PartialResourceList, Size);
-        PartialResourceList->Version = 1;
-        PartialResourceList->Revision = 1;
+        PartialResourceList->Version  = ARC_VERSION;
+        PartialResourceList->Revision = ARC_REVISION;
         PartialResourceList->Count = 3;
 
         /* Set IO Port */
@@ -928,8 +930,8 @@ DetectParallelPorts(PCONFIGURATION_COMPONENT_DATA BusKey)
 
         /* Initialize resource descriptor */
         RtlZeroMemory(PartialResourceList, Size);
-        PartialResourceList->Version = 1;
-        PartialResourceList->Revision = 1;
+        PartialResourceList->Version  = ARC_VERSION;
+        PartialResourceList->Revision = ARC_REVISION;
         PartialResourceList->Count = (Irq[i] != (ULONG) - 1) ? 2 : 1;
 
         /* Set IO Port */
@@ -1066,8 +1068,8 @@ DetectKeyboardPeripheral(PCONFIGURATION_COMPONENT_DATA ControllerKey)
 
         /* Initialize resource descriptor */
         RtlZeroMemory(PartialResourceList, Size);
-        PartialResourceList->Version = 1;
-        PartialResourceList->Revision = 1;
+        PartialResourceList->Version  = ARC_VERSION;
+        PartialResourceList->Revision = ARC_REVISION;
         PartialResourceList->Count = 1;
 
         PartialDescriptor = &PartialResourceList->PartialDescriptors[0];
@@ -1126,8 +1128,8 @@ DetectKeyboardController(PCONFIGURATION_COMPONENT_DATA BusKey)
 
     /* Initialize resource descriptor */
     RtlZeroMemory(PartialResourceList, Size);
-    PartialResourceList->Version = 1;
-    PartialResourceList->Revision = 1;
+    PartialResourceList->Version  = ARC_VERSION;
+    PartialResourceList->Revision = ARC_REVISION;
     PartialResourceList->Count = 3;
 
     /* Set Interrupt */
@@ -1304,8 +1306,8 @@ DetectPS2Mouse(PCONFIGURATION_COMPONENT_DATA BusKey)
 
         /* Initialize resource descriptor */
         RtlZeroMemory(PartialResourceList, sizeof(CM_PARTIAL_RESOURCE_LIST));
-        PartialResourceList->Version = 1;
-        PartialResourceList->Revision = 1;
+        PartialResourceList->Version  = ARC_VERSION;
+        PartialResourceList->Revision = ARC_REVISION;
         PartialResourceList->Count = 1;
 
         /* Set Interrupt */
@@ -1343,8 +1345,8 @@ DetectPS2Mouse(PCONFIGURATION_COMPONENT_DATA BusKey)
             }
 
             RtlZeroMemory(PartialResourceList, Size);
-            PartialResourceList->Version = 1;
-            PartialResourceList->Revision = 1;
+            PartialResourceList->Version  = ARC_VERSION;
+            PartialResourceList->Revision = ARC_REVISION;
             PartialResourceList->Count = 0;
 
             /* Create peripheral key */
@@ -1639,8 +1641,8 @@ DetectIsaBios(
 
     /* Initialize resource descriptor */
     RtlZeroMemory(PartialResourceList, Size);
-    PartialResourceList->Version = 1;
-    PartialResourceList->Revision = 1;
+    PartialResourceList->Version  = ARC_VERSION;
+    PartialResourceList->Revision = ARC_REVISION;
     PartialResourceList->Count = 0;
 
     /* Create new bus key */
