@@ -79,6 +79,8 @@ HalInitializeProfiling(VOID)
     KeGetPcr()->HalReserved[HAL_PROFILING_MULTIPLIER] = 1; /* TODO: HACK */
 }
 
+#if 0
+
 VOID
 NTAPI
 HalStartProfileInterrupt(IN KPROFILE_SOURCE ProfileSource)
@@ -155,5 +157,31 @@ HalSetProfileInterval(IN ULONG_PTR Interval)
     /* And set it */
     ApicWrite(APIC_TICR, (ULONG)TimerInterval);
 
+    return Interval;
+}
+
+#endif
+
+VOID
+NTAPI
+HalStartProfileInterrupt(IN KPROFILE_SOURCE ProfileSource)
+{
+    UNIMPLEMENTED;
+    return;
+}
+
+VOID
+NTAPI
+HalStopProfileInterrupt(IN KPROFILE_SOURCE ProfileSource)
+{
+    UNIMPLEMENTED;
+    return;
+}
+
+ULONG_PTR
+NTAPI
+HalSetProfileInterval(IN ULONG_PTR Interval)
+{
+    UNIMPLEMENTED;
     return Interval;
 }

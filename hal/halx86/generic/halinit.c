@@ -145,7 +145,7 @@ HalInitSystem(IN ULONG BootPhase,
         HalpInitPhase0(LoaderBlock);
 
         /* Initialize Phase 0 of the x86 emulator */
-        HalInitializeBios(0, LoaderBlock);
+        //HalInitializeBios(0, LoaderBlock);
     }
     else if (BootPhase == 1)
     {
