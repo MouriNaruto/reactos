@@ -43,7 +43,17 @@ UefiInitializeVideo(VOID)
     }
 
     framebufferData.BaseAddress        = (ULONG_PTR)gop->Mode->FrameBufferBase;
+    // Workaround for Hyper-V Generation 2 Virtual Machines
+    // Hyper-V Generation 2 Virtual Machines will return about 8 MiB as the UEFI
+    // GOP FrameBufferSize, even the screen resolution is 1024x768 with 32bpp
+    // (it should only be 3 MiB a.k.a 4 * 1024 * 768.) If you memset for 8 MiB,
+    // you will meet the dead loop, lol.
+    // So, you should not get FrameBufferSize from UEFI GOP directly. You need
+    // to do some calculations.
+    framebufferData.BufferSize         = sizeof(EFI_GRAPHICS_OUTPUT_BLT_PIXEL) * gop->Mode->Info->HorizontalResolution * gop->Mode->Info->VerticalResolution;
+    #if 0
     framebufferData.BufferSize         = gop->Mode->FrameBufferSize;
+    #endif
     framebufferData.ScreenWidth        = gop->Mode->Info->HorizontalResolution;
     framebufferData.ScreenHeight       = gop->Mode->Info->VerticalResolution;
     framebufferData.PixelsPerScanLine  = gop->Mode->Info->PixelsPerScanLine;
