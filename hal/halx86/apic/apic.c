@@ -527,7 +527,7 @@ HalpInitializePICs(IN BOOLEAN EnableInterrupts)
     _disable();
 
     /* Initialize and mask the PIC */
-    HalpInitializeLegacyPICs();
+    //HalpInitializeLegacyPICs();
 
     /* Initialize the I/O APIC */
     ApicInitializeIOApic();

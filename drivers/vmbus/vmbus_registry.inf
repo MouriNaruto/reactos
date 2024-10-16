@@ -1,0 +1,85 @@
+[AddReg]
+
+; Microsoft Hyper-V Virtual Machine Bus
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","DisplayName",0x00000000,"Microsoft Hyper-V Virtual Machine Bus"
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","Group",0x00000000,"System Bus Extender"
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","ImagePath",0x00020000,"system32\drivers\vmbus.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","Tag",0x00010001,0x00000007
+HKLM,"SYSTEM\CurrentControlSet\Services\vmbus","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Video
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","DisplayName",0x00000000,"Microsoft Hyper-V Video"
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","ErrorControl",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","Group",0x00000000,"Video"
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","ImagePath",0x00020000,"system32\drivers\VMBusVideoM.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","Tag",0x00010001,0x00000003
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","Type",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid\Video","Service",0x00000000,"SynthVid"
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid\Device0","Acceleration.Level",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid","Device Description",0x00000000,"Microsoft Hyper-V Video"
+HKLM,"SYSTEM\CurrentControlSet\Services\SynthVid\Device0","InstalledDisplayDrivers",0x00010000,"VMBusVideoD"
+
+; Microsoft Hyper-V S3 Cap
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","DisplayName",0x00000000,"Microsoft Hyper-V S3 Cap"
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","Group",0x00000000,"Video"
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","ImagePath",0x00020000,"system32\drivers\vms3cap.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","Tag",0x00010001,0x00000002
+HKLM,"SYSTEM\CurrentControlSet\Services\s3cap","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V SCSI Controller
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","DisplayName",0x00000000,"Microsoft Hyper-V SCSI Controller"
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","Group",0x00000000,"Base"
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","ImagePath",0x00020000,"system32\drivers\storvsc.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","Tag",0x00010001,0x0000000f
+HKLM,"SYSTEM\CurrentControlSet\Services\storvsc","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Storage Accelerator
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","DisplayName",0x00000000,"Microsoft Hyper-V Storage Accelerator"
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","Enabled",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","Group",0x00000000,"Extended Base"
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","ImagePath",0x00020000,"system32\drivers\vmstorfl.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","Tag",0x00010001,0x00000005
+HKLM,"SYSTEM\CurrentControlSet\Services\storflt","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Virtual Keyboard
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","DisplayName",0x00000000,"Microsoft Hyper-V Virtual Keyboard"
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","ErrorControl",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","Group",0x00000000,"Extended Base"
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","ImagePath",0x00020000,"system32\drivers\hyperkbd.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","Tag",0x00010001,0x00000007
+HKLM,"SYSTEM\CurrentControlSet\Services\hyperkbd","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Input
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","DisplayName",0x00000000,"Microsoft Hyper-V Input"
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","ErrorControl",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","Group",0x00000000,"Extended Base"
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","ImagePath",0x00020000,"system32\drivers\VMBusHID.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","Tag",0x00010001,0x00000006
+HKLM,"SYSTEM\CurrentControlSet\Services\VMBusHID","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Network Adapter
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","DisplayName",0x00000000,"Microsoft Hyper-V Network Adapter"
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","Group",0x00000000,"Extended Base"
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","ImagePath",0x00020000,"system32\drivers\netvsc50.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","Tag",0x00010001,0x00000008
+HKLM,"SYSTEM\CurrentControlSet\Services\netvsc","Type",0x00010001,0x00000001
+
+; Microsoft Hyper-V Generation Counter
+HKLM,"SYSTEM\CurrentControlSet\Services\gencounter","DisplayName",0x00000000,"Microsoft Hyper-V Generation Counter"
+HKLM,"SYSTEM\CurrentControlSet\Services\gencounter","ErrorControl",0x00010001,0x00000001
+HKLM,"SYSTEM\CurrentControlSet\Services\gencounter","ImagePath",0x00020000,"system32\drivers\vmgencounter.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\gencounter","Start",0x00010001,0x00000000
+HKLM,"SYSTEM\CurrentControlSet\Services\gencounter","Type",0x00010001,0x00000001
