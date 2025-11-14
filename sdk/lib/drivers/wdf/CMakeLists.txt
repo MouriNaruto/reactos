@@ -183,7 +183,7 @@ list(APPEND SOURCE_KM
 # set_module_type(wdf01000 kernelmodedriver ENTRYPOINT 0)
 # add_importlibs(wdf01000 ntoskrnl hal wdfldr)
 # add_cd_file(TARGET wdf01000 DESTINATION reactos/system32/drivers FOR all)
-# add_registry_inf(wdf01000_reg.inf)
+add_registry_inf(wdf01000_reg.inf)
 
 add_library(wdf01000 ${SOURCE_SHARED} ${SOURCE_KM})
 
