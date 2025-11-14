@@ -1,0 +1,156 @@
+; storflt.inf
+;
+; Installation inf for the Hyper-V Virtual Disk acceleration filter
+;
+; Copyright (c) Microsoft Corporation
+;
+
+[Version]
+Signature = "$Windows NT$"
+Class = System
+ClassGuid = {4d36e97d-e325-11ce-bfc1-08002be10318}
+CatalogFile=vmstorage.cat
+BootCritical = 0
+
+Provider  = %msft%
+DriverVer=06/21/2006,6.3.9600.19456
+
+
+;
+; General installation section
+;
+
+[Manufacturer]
+%msft%=Standard,NTamd64,NT.6,NTamd64.6
+
+[Standard]
+%device_desc%=DefaultInstall_NT5, vmbus\{32412632-86cb-44a2-9b5c-50d1417354f5}
+
+[Standard.NTamd64]
+%device_desc%=DefaultInstall_NT5, vmbus\{32412632-86cb-44a2-9b5c-50d1417354f5}
+
+[Standard.NT.6]
+%device_desc%=DefaultInstall_NT6, vmbus\{32412632-86cb-44a2-9b5c-50d1417354f5}
+
+[Standard.NTamd64.6]
+%device_desc%=DefaultInstall_NT6, vmbus\{32412632-86cb-44a2-9b5c-50d1417354f5}
+
+[DefaultInstall_NT5.NT]
+CopyFiles = Drivers_Dir
+CopyFiles = System_Dir
+Addreg    = storflt.AddReg
+
+[DefaultInstall_NT6.NT]
+CopyFiles = Drivers_Dir
+CopyFiles = System_Dir
+Addreg    = storflt.AddReg
+
+[DestinationDirs]
+DefaultDestDir = 12
+System_Dir = 11
+
+[Drivers_Dir]
+vmstorfl.sys
+
+[System_Dir]
+vmstorfltres.dll
+
+[storflt.AddReg]
+; The following registry keys are set by the coinstaller
+; HKLM, System\CurrentControlSet\Control\Class\{4d36e967-e325-11ce-bfc1-08002be10318}, LowerFilters, 0x00010008, storflt
+; HKLM, System\CurrentControlSet\Services\storflt,Enabled, 0x00010001, 1
+; HKLM, System\CurrentControlSet\Services\disk,TimeoutValue, 0x00010003, 120
+
+;
+; Coinstaller section
+;
+
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[CoInstaller_CopyFiles]
+VmdCoinstall.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "VmdCoinstall.dll,VmdCoinstaller"
+
+
+;
+; Service installation section
+;
+
+[DefaultInstall_NT5.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = storflt, , storflt.Service.Install, storflt.EventLog.Install_NT5
+
+[DefaultInstall_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = storflt, , storflt.Service.Install, storflt.EventLog.Install_NT6
+
+[DefaultInstall_NT5.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[DefaultInstall_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[storflt.Service.Install]
+DisplayName    = %service_desc%
+ServiceType    = 1
+StartType      = 0
+ErrorControl   = 1
+ServiceBinary  = %12%\vmstorfl.sys
+LoadOrderGroup = Extended Base
+
+[storflt.EventLog.Install_NT5]
+AddReg         = storflt.EventLog.AddReg_NT5
+
+[storflt.EventLog.Install_NT6]
+AddReg         = storflt.EventLog.AddReg_NT6
+
+[storflt.EventLog.AddReg_NT5]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\vmstorfltres.dll"
+HKR,,TypesSupported,0x00010001,7
+
+[storflt.EventLog.AddReg_NT6]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\vmstorfltres.dll"
+HKR,,TypesSupported,0x00010001,7
+
+[SourceDisksFiles]
+vmstorfl.sys=1
+vmstorfltres.dll=1
+VmdCoinstall.dll=1
+
+[SourceDisksNames]
+1=%DiskId%
+
+
+;
+; Uninstallation sections
+;
+
+[DefaultUninstall.Services]
+DelService = storflt,0x00000200
+
+[DefaultUninstall]
+DelFiles = Drivers_Dir
+DelFiles = System_Dir
+DelReg = storflt.DelReg
+
+[storflt.DelReg]
+HKLM, System\CurrentControlSet\Control\Class\{4d36e967-e325-11ce-bfc1-08002be10318}, LowerFilters, 0x00018002, storflt
+
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE = 0x00000002
+msft         = "Microsoft"
+DiskId       = "Microsoft Hyper-V Storage Accelerator Installation Disk #1"
+service_desc  = "Microsoft Hyper-V Storage Accelerator"
+;
+;Localizable
+;
+device_desc  = "Microsoft Hyper-V Storage Accelerator"

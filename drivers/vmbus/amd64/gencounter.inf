@@ -1,0 +1,86 @@
+;/*++
+;
+;Copyright (c) 2011 Microsoft Corporation All rights Reserved
+;
+;Module Name:
+;
+;    GenCounter.INF
+;
+;Abstract:
+;    INF file for installing VmGenCounter driver
+;
+;--*/
+[Version]
+Signature="$WINDOWS NT$"
+Class=SYSTEM
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%MSFT%
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc 
+; creates the INF file locally.
+;
+CatalogFile=vmgencounter.cat
+DriverVer=06/21/2006,6.3.9600.19456
+
+[DestinationDirs]
+Drivers_Dir = 12
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+vmgencounter.sys  = 1,,
+
+[Manufacturer]
+%StdMfg%=Standard,NTamd64,NTx86.5.1
+
+[Standard.NTx86.5.1]
+%GenCounter.DeviceDesc%=VmGenCounter,   VM_Gen_Counter
+
+[Standard.NTamd64]
+%GenCounter.DeviceDesc%=VmGenCounter,   VM_Gen_Counter
+
+[VmGenCounter.NT]
+CopyFiles=Drivers_Dir
+
+[VmGenCounter.NT.HW]
+AddReg=VmGenCounter.NT.AddReg
+
+[VmGenCounter.NT.AddReg]                            
+HKR,,DeviceCharacteristics,0x10001,0x0100         ; Use same security checks on relative opens
+; Everybody reads, admin controls (SDDL_DEVOBJ_SYS_ALL_ADM_RWX_WORLD_R_RES_R)
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GR;;;WD)(A;;GR;;;RC)"
+
+[Drivers_Dir]
+vmgencounter.sys
+
+[VmGenCounter.NT.Services]
+AddService = gencounter,%SPSVCINST_ASSOCSERVICE%, gencounter_Service_Inst
+
+[gencounter_Service_Inst]
+DisplayName    = %GenCounter.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vmgencounter.sys
+
+[DefaultUninstall.Services]
+DelService = gencounter,0x00000200
+
+[DefaultUninstall]
+DelFiles = Drivers_Dir
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE= 0x00000002
+MSFT = "Microsoft"
+StdMfg = "Microsoft"
+DiskId1 = "Microsoft Hyper-V Generation Counter Installation Disk #1"
+;
+;Localizable
+;
+GenCounter.DeviceDesc = "Microsoft Hyper-V Generation Counter"
+GenCounter.SVCDESC = "Microsoft Hyper-V Generation Counter"
+

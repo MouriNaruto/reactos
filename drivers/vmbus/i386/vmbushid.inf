@@ -1,0 +1,112 @@
+;-----------------------------------------------
+; SynthHID information display file : VMBusHID.inf
+; Installation INF for the Hyper-V VMBus HID miniport
+; Copyright(C) 2005-2006 Microsoft Corp.
+; Base INF Last Updated 9/26/2005
+
+[Version]
+Signature="$Windows NT$"
+Provider=%MSFT%
+ClassGUID={745A17A0-74D3-11D0-B6FE-00A0C90F57DA}
+Class=HIDClass
+DriverVer=06/21/2006,6.3.9600.19456
+CatalogFile=vmbushid.cat
+
+[ControlFlags]
+ExcludeFromSelect = *
+
+[DestinationDirs]
+DefaultDestDir  = 12
+
+;
+; Driver information
+;
+
+[Manufacturer]
+%StdMfg% = Standard,NTx86
+
+[Standard]
+;
+; PnP IDs for win2k
+;
+%VMBusHid.DeviceDesc% = VMBusHID, VMBUS\{CFA8B69E-5B4A-4cc0-B98B-8BA1A1F3F95A}
+
+
+[Standard.NTx86]
+;
+; PnP IDs for XP and later
+;
+%VMBusHid.DeviceDesc% = VMBusHID, VMBUS\{CFA8B69E-5B4A-4cc0-B98B-8BA1A1F3F95A}
+
+;
+; General installation section
+;
+
+[VMBusHID]
+include=input.inf
+Needs=HID_Inst.NT
+CopyFiles=SYS.CopyList
+
+;
+; File sections
+;
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+VMBusHID.sys = 1,,
+
+[SYS.CopyList]
+VMBusHID.sys
+
+;
+; Service Installation
+;
+
+
+[VMBusHID.Services]
+AddService = "VMBusHID", 0x00000002, VMBusHID_Service_Inst
+
+;
+; Service Installation Section
+;
+
+[VMBusHID_Service_Inst]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+LoadOrderGroup = Extended Base
+ServiceBinary  = %12%\VMBusHID.sys
+
+;
+; Uninstallation sections
+;
+
+[DefaultUninstall.Services]
+DelService = VMBusHID,0x00000200
+
+[DefaultUninstall]
+DelFiles = SYS.CopyList
+
+;
+; String Section
+;
+
+[Strings]
+;
+; Non-Localizable Strings
+;
+REG_SZ           = 0x00000000
+REG_MULTI_SZ     = 0x00010000
+REG_EXPAND_SZ    = 0x00020000
+REG_BINARY       = 0x00000001
+REG_DWORD        = 0x00010001
+SERVICEROOT      = "System\CurrentControlSet\Services"
+DiskId1          = "Microsoft Hyper-V Input Installation Disk #1"
+MSFT             = "Microsoft"
+StdMfg           = "Microsoft"
+;
+; Localizable Strings
+;
+VMBusHid.DeviceDesc = "Microsoft Hyper-V Input"
