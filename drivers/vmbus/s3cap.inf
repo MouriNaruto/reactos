@@ -1,0 +1,116 @@
+;/*++
+;
+;Copyright (c) Microsoft Corporation
+;
+;Module Name:
+;
+;    s3cap.inf
+;
+;Abstract:
+;
+;    This is the INF file for installing the Hyper-V VGA Cap driver
+;    
+;Environment:
+;
+;    Driver installation
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Provider=%MSFT%
+ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318}
+Class=System
+DriverVer=06/21/2006,6.2.9200.16384
+LayoutFile=layout.inf
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc 
+; creates the downlevel version of the INF file.
+;
+CatalogFile=vmbusvideo.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+S3Cap.Copy = 12
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+;
+; S3 Cap Device Install Section
+;
+
+[Manufacturer]
+%StdMfg% = Standard, NTamd64
+
+[Standard]
+%S3CapDevice.DeviceDesc% = S3Cap, PCI\VEN_1414&DEV_5353&SUBSYS_00000000&REV_00
+%S3CapDevice.DeviceDesc% = S3Cap, PCI\VEN_1414&DEV_5353&SUBSYS_00001414&REV_00
+
+[Standard.NTamd64]
+%S3CapDevice.DeviceDesc% = S3Cap, PCI\VEN_1414&DEV_5353&SUBSYS_00000000&REV_00
+%S3CapDevice.DeviceDesc% = S3Cap, PCI\VEN_1414&DEV_5353&SUBSYS_00001414&REV_00
+
+[S3Cap]
+;FeatureScore=80
+CopyFiles=S3Cap.Copy
+
+;
+; File sections
+;
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+vms3cap.sys  = 1,,
+
+[S3Cap.Copy]
+vms3cap.sys
+
+;
+; Service installation
+;
+
+[S3Cap.Services]
+AddService = s3cap, %SPSVCINST_ASSOCSERVICE%, s3cap_Service_Inst
+
+[s3cap_Service_Inst]
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vms3cap.sys
+LoadOrderGroup = Video
+AddReg         = s3cap_Parameters_AddReg
+
+[s3cap_Parameters_AddReg]
+HKR, Parameters\Wdf, DbgPrintOn,      0x00010001, 0
+HKR, Parameters\Wdf, DbgBreakOnError, 0x00010001, 0
+
+;
+; Uninstallation sections
+;
+
+[DefaultUninstall.Services]
+DelService = s3cap,0x00000200
+
+[DefaultUninstall]
+DelFiles = S3Cap.Copy
+
+;
+; Strings
+;
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE= 0x00000002
+MSFT = "Microsoft"
+StdMfg = "(Standard system devices)"
+ClassName = "S3 Cap"
+DiskId1 = "Microsoft Hyper-V S3 Cap Installation Disk #1"
+;
+;Localizable
+;
+S3CapDevice.DeviceDesc  = "Microsoft Hyper-V S3 Cap"

@@ -1,0 +1,797 @@
+;/*++
+;
+; Copyright (c) 2006 Microsoft Corporation All rights Reserved
+;
+; Module Name:
+;
+;    vmic.inf
+;
+; Abstract:
+;    INF file for installing the integration components on Windows XP/2003, Vista, Server 2008,
+;    Windows 7 and Server 2008 R2.
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%MSFT%
+
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc 
+; creates the INF file locally.
+;
+
+CatalogFile=vmic.cat
+DriverVer=06/21/2006,6.2.9200.16384
+
+[DestinationDirs]
+DefaultDestDir = 11
+
+[SourceDisksNames]
+1 = %DiskId1%
+
+[SourceDisksFiles]
+icsvc.dll = 1
+vmicres.dll = 1
+vmictimeprovider.dll = 1
+IcCoinstall2.dll = 1
+VmApplicationHealthMonitorProxy.dll = 1
+vmrdvcore.dll = 1
+
+;-------------- Service files
+[System_Dir]
+icsvc.dll
+vmicres.dll
+VmApplicationHealthMonitorProxy.dll
+
+;-------------- Coinstaller defs
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[CoInstaller_CopyFiles]
+IcCoinstall2.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,%REG_MULTI_SZ%, "IcCoinstall2.dll,IcCoinstaller"
+
+
+;*****************************************
+; Models Sections
+;*****************************************
+
+[Manufacturer]
+%StdMfg%=Standard,NT.5.2,NTamd64,NT.6,NTamd64.6 
+
+;-------------- Windows 2000, Windows XP (x86 only)
+[Standard]
+%Heartbeat.DeviceDesc%   = VmIcHeartbeat_NT5_x86,	vmbus\{57164f39-9115-4e78-ab55-382f3bd5422d}
+%KvpExchange.DeviceDesc% = VmIcKvpExchange_NT5, 	vmbus\{242ff919-07db-4180-9c2e-b86cb68c8c55}
+%Shutdown.DeviceDesc%    = VmIcShutdown_NT5,    	vmbus\{b6650ff7-33bc-4840-8048-e0676786f393}
+%TimeSync.DeviceDesc%    = VmIcTimeSync_NT5,    	vmbus\{2dd1ce17-079e-403c-b352-a1921ee207ee}
+%VSS_Null.DeviceDesc%    = VmIcVss_Null,        	vmbus\{2450ee40-33bf-4fbd-892e-9fb06e9214cf}
+%Rdv_Null.DeviceDesc%    = VmIcRdv_Null,        	vmbus\{276aacf4-ac15-426c-98dd-7521ad3f01fe}
+
+;-------------- Windows Server 2003 (x86 and amd64)
+[Standard.NT.5.2]
+%Heartbeat.DeviceDesc%   = VmIcHeartbeat_NT5_x86,   	vmbus\{57164f39-9115-4e78-ab55-382f3bd5422d}
+%KvpExchange.DeviceDesc% = VmIcKvpExchange_NT5, 	vmbus\{242ff919-07db-4180-9c2e-b86cb68c8c55}
+%Shutdown.DeviceDesc%    = VmIcShutdown_NT5,    	vmbus\{b6650ff7-33bc-4840-8048-e0676786f393}
+%TimeSync.DeviceDesc%    = VmIcTimeSync_NT5,    	vmbus\{2dd1ce17-079e-403c-b352-a1921ee207ee}
+%VSS.DeviceDesc%         = VmIcVss_NT5,         	vmbus\{2450ee40-33bf-4fbd-892e-9fb06e9214cf}
+%Rdv_Null.DeviceDesc%    = VmIcRdv_Null,        	vmbus\{276aacf4-ac15-426c-98dd-7521ad3f01fe}
+
+[Standard.NTamd64]
+%Heartbeat.DeviceDesc%   = VmIcHeartbeat_NT5_amd64,   	vmbus\{57164f39-9115-4e78-ab55-382f3bd5422d}
+%KvpExchange.DeviceDesc% = VmIcKvpExchange_NT5, 	vmbus\{242ff919-07db-4180-9c2e-b86cb68c8c55}
+%Shutdown.DeviceDesc%    = VmIcShutdown_NT5,    	vmbus\{b6650ff7-33bc-4840-8048-e0676786f393}
+%TimeSync.DeviceDesc%    = VmIcTimeSync_NT5,    	vmbus\{2dd1ce17-079e-403c-b352-a1921ee207ee}
+%VSS.DeviceDesc%         = VmIcVss_NT5,         	vmbus\{2450ee40-33bf-4fbd-892e-9fb06e9214cf}
+%Rdv_Null.DeviceDesc%    = VmIcRdv_Null,        	vmbus\{276aacf4-ac15-426c-98dd-7521ad3f01fe}
+
+;-------------- Windows Vista and up (x86 and amd64)
+[Standard.NT.6]
+%Heartbeat.DeviceDesc%   = VmIcHeartbeat_NT6_x86,    	vmbus\{57164f39-9115-4e78-ab55-382f3bd5422d}
+%KvpExchange.DeviceDesc% = VmIcKvpExchange_NT6,  	vmbus\{242ff919-07db-4180-9c2e-b86cb68c8c55}
+%Shutdown.DeviceDesc%    = VmIcShutdown_NT6,     	vmbus\{b6650ff7-33bc-4840-8048-e0676786f393}
+%TimeSync.DeviceDesc%    = VmIcTimeSync_NT6,     	vmbus\{2dd1ce17-079e-403c-b352-a1921ee207ee}
+%VSS.DeviceDesc%         = VmIcVss_NT6,          	vmbus\{2450ee40-33bf-4fbd-892e-9fb06e9214cf}
+%RDV.DeviceDesc%         = VmIcRdv_NT6,          	vmbus\{276aacf4-ac15-426c-98dd-7521ad3f01fe}
+
+[Standard.NTamd64.6]
+%Heartbeat.DeviceDesc%   = VmIcHeartbeat_NT6_amd64,    	vmbus\{57164f39-9115-4e78-ab55-382f3bd5422d}
+%KvpExchange.DeviceDesc% = VmIcKvpExchange_NT6,  	vmbus\{242ff919-07db-4180-9c2e-b86cb68c8c55}
+%Shutdown.DeviceDesc%    = VmIcShutdown_NT6,     	vmbus\{b6650ff7-33bc-4840-8048-e0676786f393}
+%TimeSync.DeviceDesc%    = VmIcTimeSync_NT6,     	vmbus\{2dd1ce17-079e-403c-b352-a1921ee207ee}
+%VSS.DeviceDesc%         = VmIcVss_NT6,          	vmbus\{2450ee40-33bf-4fbd-892e-9fb06e9214cf}
+%RDV.DeviceDesc%         = VmIcRdv_NT6,          	vmbus\{276aacf4-ac15-426c-98dd-7521ad3f01fe}
+
+
+;*****************************************
+; Install Sections
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003 (x86 and amd64)
+[VmIcHeartbeat_NT5_x86.NT]
+CopyFiles=System_Dir
+
+[VmIcHeartbeat_NT5_amd64.NT]
+CopyFiles=System_Dir
+
+[VmIcKvpExchange_NT5.NT]
+CopyFiles=System_Dir
+AddReg=KvpExchange_NT5_AddReg
+
+[VmIcShutdown_NT5.NT]
+CopyFiles=System_Dir
+
+[VmIcTimeSync_NT5.NT]
+CopyFiles=System_Dir,TimeSync_CopyFiles
+AddReg=TimeSync_AddReg,TimeSync_NT5_AddReg
+
+[VmIcVss_NT5.NT]
+CopyFiles=System_Dir
+
+;-------------- Windows Vista and up
+[VmIcHeartbeat_NT6_x86.NT]
+CopyFiles=System_Dir
+
+[VmIcHeartbeat_NT6_amd64.NT]
+CopyFiles=System_Dir
+
+[VmIcKvpExchange_NT6.NT]
+CopyFiles=System_Dir
+AddReg=KvpExchange_NT6_AddReg
+
+[VmIcShutdown_NT6.NT]
+CopyFiles=System_Dir
+
+[VmIcTimeSync_NT6.NT]
+CopyFiles=System_Dir,TimeSync_CopyFiles
+AddReg=TimeSync_AddReg,TimeSync_NT6_AddReg
+
+[VmIcVss_NT6.NT]
+CopyFiles=System_Dir
+
+[VmIcRdv_NT6.NT]
+CopyFiles=System_Dir,Rdv_CopyFiles
+
+
+;*****************************************
+; HW Sections
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003
+[VmIcHeartbeat_NT5_x86.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+[VmIcHeartbeat_NT5_amd64.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+[VmIcKvpExchange_NT5.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+[VmIcShutdown_NT5.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+[VmIcTimeSync_NT5.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+[VmIcVss_NT5.HW]
+AddReg=VmIc_NT5.HW.AddReg
+
+;-------------- Windows Vista and up
+[VmIcHeartbeat_NT6_x86.NT.HW]
+AddReg=VmIcHeartbeat_NT6.HW.AddReg
+
+[VmIcHeartbeat_NT6_amd64.NT.HW]
+AddReg=VmIcHeartbeat_NT6.HW.AddReg
+
+[VmIcKvpExchange_NT6.NT.HW]
+AddReg=VmIcKvpExchange_NT6.HW.AddReg
+
+[VmIcShutdown_NT6.NT.HW]
+AddReg=VmIcShutdown_NT6.HW.AddReg
+
+[VmIcTimeSync_NT6.NT.HW]
+AddReg=VmIcTimeSync_NT6.HW.AddReg
+
+[VmIcVss_NT6.NT.HW]
+AddReg=VmIcVss_NT6.HW.AddReg
+
+[VmIcRdv_NT6.NT.HW]
+AddReg=VmIcRdv_NT6.HW.AddReg
+
+
+;*****************************************
+; Services Sections
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003
+[VmIcHeartbeat_NT5_x86.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicheartbeat, 0, Heartbeat_Service_Inst_NT5_x86, Heartbeat_EventLog_Inst_NT5, Application
+
+[VmIcHeartbeat_NT5_amd64.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicheartbeat, 0, Heartbeat_Service_Inst_NT5_amd64, Heartbeat_EventLog_Inst_NT5, Application
+
+[VmIcKvpExchange_NT5.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmickvpexchange, 0, KvpExchange_Service_Inst_NT5, KvpExchange_EventLog_Inst_NT5, Application
+
+[VmIcShutdown_NT5.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicshutdown, 0, Shutdown_Service_Inst_NT5, Shutdown_EventLog_Inst_NT5, Application
+
+[VmIcTimeSync_NT5.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmictimesync, 0, TimeSync_Service_Inst_NT5, TimeSync_EventLog_Inst_NT5, Application
+
+[VmIcVss_NT5.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicvss, 0, VSS_Service_Inst_NT5, VSS_EventLog_Inst_NT5, Application
+
+[VmIcVss_Null.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+
+[VmIcRdv_Null.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+
+;-------------- Windows Vista an up
+[VmIcHeartbeat_NT6_x86.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicheartbeat, 0, Heartbeat_Service_Inst_NT6_x86, Heartbeat_EventLog_Inst_NT6, Application
+
+[VmIcHeartbeat_NT6_amd64.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicheartbeat, 0, Heartbeat_Service_Inst_NT6_amd64, Heartbeat_EventLog_Inst_NT6, Application
+
+[VmIcKvpExchange_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmickvpexchange, 0, KvpExchange_Service_Inst_NT6, KvpExchange_EventLog_Inst_NT6, Application
+
+[VmIcShutdown_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicshutdown, 0, Shutdown_Service_Inst_NT6, Shutdown_EventLog_Inst_NT6, Application
+
+[VmIcTimeSync_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmictimesync, 0, TimeSync_Service_Inst_NT6, TimeSync_EventLog_Inst_NT6, Application
+
+[VmIcVss_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicvss, 0, VSS_Service_Inst_NT6, VSS_EventLog_Inst_NT6, Application
+
+[VmIcRdv_NT6.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+AddService = vmicrdv, 0, Rdv_Service_Inst_NT6, Rdv_EventLog_Inst_NT6, Application
+
+;*****************************************
+; CoInstallers Sections
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003
+[VmIcHeartbeat_NT5_x86.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcHeartbeat_NT5_amd64.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcKvpExchange_NT5.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcShutdown_NT5.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcTimeSync_NT5.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcVss_NT5.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+;-------------- Windows Vista and up
+[VmIcHeartbeat_NT6_x86.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcHeartbeat_NT6_amd64.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcKvpExchange_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcShutdown_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcTimeSync_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcVss_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[VmIcRdv_NT6.NT.CoInstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+
+;*****************************************
+; VMBUS channel security settings
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003
+; Generic-all access to Built-in Administrators and Local System
+
+[VmIc_NT5.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)"
+
+;-------------- Windows Vista and up
+; Generic-all access to Built-in Administrators, Local System and "NT SERVICE\<IC service name>"
+
+[VmIcHeartbeat_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-534935901-3437432317-481271085-1710633381-983106267)"
+
+[VmIcKvpExchange_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-1877308096-3090306141-3032871208-3115266146-1400827410)"
+
+[VmIcShutdown_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-3110303136-3426481729-3186938678-1087894076-2178433439)"
+
+[VmIcTimeSync_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-3098585136-2538892366-1097114017-2832417424-2016953023)"
+
+[VmIcVss_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-1752088424-1054500994-3489791022-3310831482-3926524968)"
+
+[VmIcRdv_NT6.HW.AddReg]
+HKR,,DeviceCharacteristics,%REG_DWORD%,0x0100 ;FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;S-1-5-80-3076811988-2254870394-2658297454-3934945422-2393138642)"
+
+;*****************************************
+; Service driver install sections
+;*****************************************
+
+;-------------- Windows 2000, Windows XP, Windows Server 2003
+[Heartbeat_Service_Inst_NT5_x86]
+DisplayName    = %Heartbeat.ServiceName%
+Description    = %Heartbeat.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = Heartbeat_AddReg_Common,Heartbeat_AddReg_x86
+
+[Heartbeat_Service_Inst_NT5_amd64]
+DisplayName    = %Heartbeat.ServiceName%
+Description    = %Heartbeat.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = Heartbeat_AddReg_Common,Heartbeat_AddReg_amd64
+
+[KvpExchange_Service_Inst_NT5]
+DisplayName    = %KvpExchange.ServiceName%
+Description    = %KvpExchange.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = KvpExchange_AddReg_Common
+
+[Shutdown_Service_Inst_NT5]
+DisplayName    = %Shutdown.ServiceName%
+Description    = %Shutdown.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = Shutdown_AddReg_Common
+
+[TimeSync_Service_Inst_NT5]
+DisplayName    = %TimeSync.ServiceName%
+Description    = %TimeSync.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = TimeSync_AddReg_Common
+
+[VSS_Service_Inst_NT5]
+DisplayName    = %VSS.ServiceName%
+Description    = %VSS.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %11%\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+AddReg         = VSS_AddReg_Common
+
+[Heartbeat_EventLog_Inst_NT5]
+AddReg         = Heartbeat_EventLog_AddReg_Common
+
+[KvpExchange_EventLog_Inst_NT5]
+AddReg         = KvpExchange_EventLog_AddReg_Common
+
+[Shutdown_EventLog_Inst_NT5]
+AddReg         = Shutdown_EventLog_AddReg_Common
+
+[TimeSync_EventLog_Inst_NT5]
+AddReg         = TimeSync_EventLog_AddReg_Common
+
+[VSS_EventLog_Inst_NT5]
+AddReg         = VSS_EventLog_AddReg_Common
+
+;-------------- Windows Vista and up
+[Heartbeat_Service_Inst_NT6_x86]
+DisplayName    = %Heartbeat.ServiceName%
+Description    = %Heartbeat.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = Heartbeat_AddReg_Common,Heartbeat_AddReg_x86,Heartbeat_AddReg_NT6,Service_Sid_Type_Unrestricted,Heartbeat_Required_Privileges
+
+[Heartbeat_Service_Inst_NT6_amd64]
+DisplayName    = %Heartbeat.ServiceName%
+Description    = %Heartbeat.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = Heartbeat_AddReg_Common,Heartbeat_AddReg_amd64,Heartbeat_AddReg_NT6,Service_Sid_Type_Unrestricted,Heartbeat_Required_Privileges
+
+[KvpExchange_Service_Inst_NT6]
+DisplayName    = %KvpExchange.ServiceName%
+Description    = %KvpExchange.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k LocalSystemNetworkRestricted
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = KvpExchange_AddReg_Common,KvpExchange_AddReg_NT6,Service_Sid_Type_Unrestricted,KvpExchange_Required_Privileges
+
+[Shutdown_Service_Inst_NT6]
+DisplayName    = %Shutdown.ServiceName%
+Description    = %Shutdown.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k LocalSystemNetworkRestricted
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = Shutdown_AddReg_Common,Shutdown_AddReg_NT6,Service_Sid_Type_Unrestricted,Shutdown_Required_Privileges
+
+[TimeSync_Service_Inst_NT6]
+DisplayName    = %TimeSync.ServiceName%
+Description    = %TimeSync.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k LocalServiceNetworkRestricted
+LoadOrderGroup = Extended Base
+StartName      = "NT AUTHORITY\LocalService"
+AddReg         = TimeSync_AddReg_Common,TimeSync_AddReg_NT6,Service_Sid_Type_Unrestricted,TimeSync_Required_Privileges,
+
+[VSS_Service_Inst_NT6]
+DisplayName    = %VSS.ServiceName%
+Description    = %VSS.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k LocalSystemNetworkRestricted
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = VSS_AddReg_Common,VSS_AddReg_NT6,Service_Sid_Type_Unrestricted,Vss_Required_Privileges
+
+[Rdv_Service_Inst_NT6]
+DisplayName    = %Rdv.ServiceName%
+Description    = %Rdv.Description%
+ServiceType    = 32              ; SERVICE_WIN32_SHARE_PROCESS
+StartType      = 2               ; SERVICE_AUTO_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %%SystemRoot%%\System32\svchost.exe -k ICService
+LoadOrderGroup = Extended Base
+StartName      = LocalSystem
+AddReg         = Rdv_AddReg_Common,Rdv_AddReg_NT6,Service_Sid_Type_Unrestricted,Rdv_Required_Privileges
+
+[Heartbeat_EventLog_Inst_NT6]
+AddReg         = Heartbeat_EventLog_AddReg_Common
+
+[KvpExchange_EventLog_Inst_NT6]
+AddReg         = KvpExchange_EventLog_AddReg_Common
+
+[Shutdown_EventLog_Inst_NT6]
+AddReg         = Shutdown_EventLog_AddReg_Common
+
+[TimeSync_EventLog_Inst_NT6]
+AddReg         = TimeSync_EventLog_AddReg_Common
+
+[VSS_EventLog_Inst_NT6]
+AddReg         = VSS_EventLog_AddReg_Common
+
+[Rdv_EventLog_Inst_NT6]
+AddReg         = Rdv_EventLog_AddReg_Common
+
+[Heartbeat_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "HeartbeatServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+HKLM, "SOFTWARE\Classes\HyperV.AppHealthMonitor", "", %REG_SZ%, "Hyper-V Application Health Monitor"
+HKLM, "SOFTWARE\Classes\HyperV.AppHealthMonitor\Clsid", "", %REG_SZ%, "{397a2e5f-348c-482d-b9a3-57d383b483cd}"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}", "", %REG_SZ%, "Hyper-V Application Health Monitor"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}", "AppID", %REG_SZ%, "{be0fc7f0-f248-4091-a123-34ca29a6901b}"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}", "LocalizedString", %REG_EXPAND_SZ%, "@%systemroot%\system32\vmicres.dll,-103"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}\ProgID", "", %REG_SZ%, "HyperV.AppHealthMonitor"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}\TypeLib", "", %REG_SZ%, "{132b42fb-871b-4077-ae2e-bf7fd772385e}"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}\Version", "", %REG_SZ%, "1.0"
+HKLM, "SOFTWARE\Classes\CLSID\{397a2e5f-348c-482d-b9a3-57d383b483cd}\Programmable", ""
+HKLM, "SOFTWARE\Classes\AppID\{be0fc7f0-f248-4091-a123-34ca29a6901b}", "", %REG_SZ%, "VM IC Heartbeat Service"
+HKLM, "SOFTWARE\Classes\AppID\{be0fc7f0-f248-4091-a123-34ca29a6901b}", "LocalService", %REG_SZ%, "vmicheartbeat"
+HKLM, "SOFTWARE\Classes\TypeLib\{132b42fb-871b-4077-ae2e-bf7fd772385e}", "", %REG_SZ%, ""
+HKLM, "SOFTWARE\Classes\TypeLib\{132b42fb-871b-4077-ae2e-bf7fd772385e}\1.0", "", %REG_SZ%, "Hyper-V Application Health Monitor Type Library"
+HKLM, "SOFTWARE\Classes\TypeLib\{132b42fb-871b-4077-ae2e-bf7fd772385e}\1.0\FLAGS", "", %REG_SZ%, "0"
+HKLM, "SOFTWARE\Classes\Interface\{267a0284-848f-447e-a096-5e10a1a76bca}", "", %REG_SZ%, "IVmApplicationHealthMonitor"
+HKLM, "SOFTWARE\Classes\Interface\{267a0284-848f-447e-a096-5e10a1a76bca}\ProxyStubClsid32", "", %REG_SZ%, "{087798c4-3c0a-48d4-abc9-ed60912fa139}"
+HKLM, "SOFTWARE\Classes\CLSID\{087798c4-3c0a-48d4-abc9-ed60912fa139}\InprocServer32", "", %REG_EXPAND_SZ%, "%systemroot%\system32\VmApplicationHealthMonitorProxy.dll"
+HKLM, "SOFTWARE\Classes\CLSID\{087798c4-3c0a-48d4-abc9-ed60912fa139}\InprocServer32", "ThreadingModel", %REG_SZ%, "Both"
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost\ICService", "CoInitializeSecurityParam", %REG_DWORD%, 1
+
+[Heartbeat_AddReg_x86]
+HKLM, "SOFTWARE\Classes\TypeLib\{132b42fb-871b-4077-ae2e-bf7fd772385e}\1.0\0\win32", "", %REG_EXPAND_SZ%, "%SystemRoot%\System32\ICSvc.dll"
+
+[Heartbeat_AddReg_amd64]
+HKLM, "SOFTWARE\Classes\TypeLib\{132b42fb-871b-4077-ae2e-bf7fd772385e}\1.0\0\win64", "", %REG_EXPAND_SZ%, "%SystemRoot%\System32\ICSvc.dll"
+
+[Heartbeat_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicheartbeat-allow-in-1", %REG_SZ%, "V2.0|Action=Allow|Dir=In|LPort=389|Protocol=6|App=%SystemRoot%\System32\svchost.exe|Svc=vmicheartbeat|Name=Allow inbound TCP port 389 traffic for vmicheartbeat|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicheartbeat-allow-in-2", %REG_SZ%, "V2.0|Action=Allow|Dir=In|LPort=636|Protocol=6|App=%SystemRoot%\System32\svchost.exe|Svc=vmicheartbeat|Name=Allow inbound TCP port 636 traffic for vmicheartbeat|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicheartbeat-allow-out", %REG_SZ%, "V2.0|Action=Allow|Dir=Out|Protocol=6|App=%SystemRoot%\System32\svchost.exe|Svc=vmicheartbeat|Name=Allow outbound TCP traffic for vmicheartbeat|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicheartbeat-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmicheartbeat|Name=Block any other inbound traffic for vmicheartbeat|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicheartbeat-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmicheartbeat|Name=Block any other outbound traffic for vmicheartbeat|"
+
+[KvpExchange_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "KvpexchangeServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+
+[KvpExchange_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmickvpexchange-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmickvpexchange|Name=Block any inbound traffic for vmickvpexchange|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmickvpexchange-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmickvpexchange|Name=Block any outbound traffic for vmickvpexchange|"
+
+[Shutdown_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "ShutdownServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+
+[Shutdown_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicshutdown-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmicshutdown|Name=Block any inbound traffic for vmicshutdown|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicshutdown-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmicshutdown|Name=Block any outbound traffic for vmicshutdown|"
+
+[TimeSync_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "TimesyncServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+
+[TimeSync_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmictimesync-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmictimesync|Name=Block any inbound traffic for vmictimesync|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmictimesync-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmictimesync|Name=Block any outbound traffic for vmictimesync|"
+
+[VSS_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "VssServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+
+[VSS_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicvss-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmicvss|Name=Block any inbound traffic for vmicvss|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicvss-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmicvss|Name=Block any outbound traffic for vmicvss|"
+
+[Heartbeat_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[KvpExchange_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[Shutdown_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[TimeSync_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[VSS_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[Rdv_EventLog_AddReg_Common]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmicres.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[Rdv_AddReg_Common]
+HKR, "Parameters", "ServiceDll", %REG_EXPAND_SZ%, "%%SystemRoot%%\System32\ICSvc.dll"
+HKR, "Parameters", "ServiceMain", %REG_SZ%, "RdvServiceMain"
+HKR, "Parameters", "ServiceDllUnloadOnStop", %REG_DWORD%, 1
+
+[Rdv_AddReg_NT6]
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicrdv-block-in", %REG_SZ%, "V2.0|Action=Block|Dir=In|App=%SystemRoot%\System32\svchost.exe|Svc=vmicrdv|Name=Block any inbound traffic for vmicrdv|"
+HKLM, "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System", "vmicrdv-block-out", %REG_SZ%, "V2.0|Action=Block|Dir=Out|App=%SystemRoot%\System32\svchost.exe|Svc=vmicrdv|Name=Block any outbound traffic for vmicrdv|"
+
+[Service_Sid_Type_Unrestricted]
+HKR,,ServiceSidType,%REG_DWORD%,0x1
+
+[Service_Sid_Type_Restricted]
+HKR,,ServiceSidType,%REG_DWORD%,0x3
+
+[Heartbeat_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege"
+
+[KvpExchange_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege"
+
+[Shutdown_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege","SeShutdownPrivilege","SeTcbPrivilege","SeImpersonatePrivilege"
+
+[TimeSync_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege","SeSystemtimePrivilege","SeCreateGlobalPrivilege"
+
+[Vss_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege","SeBackupPrivilege"
+
+[Rdv_Required_Privileges]
+HKR,,RequiredPrivileges,%REG_MULTI_SZ%,"SeChangeNotifyPrivilege","SeBackupPrivilege","SeRestorePrivilege","SeTakeOwnershipPrivilege","SeManageVolumePrivilege","SeCreateSymbolicLinkPrivilege","SeShutdownPrivilege"
+
+
+;*****************************************
+; Additional component-specific sections
+;*****************************************
+
+;-------------- TimeSync time provider installation (all platforms)
+[TimeSync_AddReg]
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,Enabled,%REG_DWORD%,1
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,InputProvider,%REG_DWORD%,1
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,RunOnVirtualOnly,%REG_DWORD%,1
+
+[TimeSync_NT5_AddReg]
+;
+; on down-level OS, DllName must be FLG_ADDREG_TYPE_SZ.
+; Intentionally keep NO_CLOBBER bit clear.
+;
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,DllName,%REG_SZ%,"%11%\vmictimeprovider.dll"
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider\Parameters,,0x00000010 ;FLG_ADDREG_KEYONLY
+;On NT5.x the inherited permissions are sufficient for this key
+
+[TimeSync_NT6_AddReg]
+;
+; On Vista and up, DllName can be a FLG_ADDREG_TYPE_EXPAND_SZ.
+; Intentionally keep NO_CLOBBER bit clear.
+;
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,DllName,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\vmictimeprovider.dll"
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider\Parameters,,0x00000010 ;FLG_ADDREG_KEYONLY
+
+[TimeSync_NT6_AddReg.security]
+;Add the vmictimesync service to the inherited permissions
+"D:P(A;CI;GR;;;BU)(A;CI;GA;;;BA)(A;CI;GA;;;SY)(A;CI;GR;;;NS)(A;CI;GRGWSD;;;S-1-5-80-4267341169-2882910712-659946508-2704364837-2204554466)(A;CI;GR;;;NO)(A;;GA;;;S-1-5-80-3098585136-2538892366-1097114017-2832417424-2016953023)"
+
+[TimeSync_CopyFiles]
+vmictimeprovider.dll
+
+[TimeSync_DelReg]
+HKLM,SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\VMICTimeProvider,,0x00002000
+
+;-------------- KvpExchange regitry keys (Windows 2000, Windows XP/Windows Server 2003)
+[KvpExchange_NT5_AddReg]
+HKLM,Software\Microsoft\Virtual Machine,,0x00000010 ;FLG_ADDREG_KEYONLY
+
+[KvpExchange_NT5_AddReg.security]
+;Generic all access to Local System and Administrators
+;Generic read access to Authenticated Users
+"D:P(A;OICI;GA;;;SY)(A;OICI;GA;;;BA)(A;OICI;GR;;;AU)"
+
+;-------------- KvpExchange regitry keys (Windows Vista and up)
+[KvpExchange_NT6_AddReg]
+HKLM,Software\Microsoft\Virtual Machine,,0x00000010 ;FLG_ADDREG_KEYONLY
+
+[KvpExchange_NT6_AddReg.security]
+;Generic all access to Local System, Administrators and "NT SERVICE\vmickvpexchange"
+;Generic read access to Authenticated Users
+"D:P(A;OICI;GA;;;SY)(A;OICI;GA;;;BA)(A;OICI;GA;;;S-1-5-80-1877308096-3090306141-3032871208-3115266146-1400827410)(A;OICI;GR;;;AU)"
+
+[Rdv_CopyFiles]
+vmrdvcore.dll
+
+;*****************************************
+; Uninstall sections
+;*****************************************
+
+[DefaultUninstall.Services]
+DelService = vmicheartbeat,0x00000200
+DelService = vmickvpexchange,0x00000200
+DelService = vmicshutdown,0x00000200
+DelService = vmictimesync,0x00000200
+DelService = vmicvss,0x00000200
+DelService = vmicrdv,0x00000200
+
+[DefaultUninstall]
+DelFiles = System_Dir
+DelFiles = TimeSync_CopyFiles,Rdv_CopyFiles
+DelReg = TimeSync_DelReg
+
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE = 0x00000002
+MSFT = "Microsoft"
+StdMfg = "Microsoft"
+DiskId1 = "Microsoft Hyper-V Integration Components"
+
+Heartbeat.ServiceName   = "@%SystemRoot%\system32\vmicres.dll,-101"
+Heartbeat.Description   = "@%SystemRoot%\system32\vmicres.dll,-102"
+
+KvpExchange.ServiceName = "@%SystemRoot%\system32\vmicres.dll,-201"
+KvpExchange.Description = "@%SystemRoot%\system32\vmicres.dll,-202"
+
+Shutdown.ServiceName    = "@%SystemRoot%\system32\vmicres.dll,-301"
+Shutdown.Description    = "@%SystemRoot%\system32\vmicres.dll,-302"
+
+TimeSync.ServiceName    = "@%SystemRoot%\system32\vmicres.dll,-401"
+TimeSync.Description    = "@%SystemRoot%\system32\vmicres.dll,-402"
+
+VSS.ServiceName         = "@%SystemRoot%\system32\vmicres.dll,-501"
+VSS.Description         = "@%SystemRoot%\system32\vmicres.dll,-502"
+
+Rdv.ServiceName         = "@%SystemRoot%\system32\vmicres.dll,-601"
+Rdv.Description         = "@%SystemRoot%\system32\vmicres.dll,-602"
+
+;
+;Registry types
+;
+REG_SZ                  = 0x00000
+REG_MULTI_SZ            = 0x10000
+REG_DWORD               = 0x10001
+REG_EXPAND_SZ           = 0x20000
+
+;
+;Localizable
+;
+Heartbeat.DeviceDesc    = "Microsoft Hyper-V Heartbeat"
+KvpExchange.DeviceDesc  = "Microsoft Hyper-V Data Exchange"
+Shutdown.DeviceDesc     = "Microsoft Hyper-V Guest Shutdown"
+TimeSync.DeviceDesc     = "Microsoft Hyper-V Time Synchronization"
+VSS.DeviceDesc          = "Microsoft Hyper-V Volume Shadow Copy"
+VSS_Null.DeviceDesc     = "Microsoft Hyper-V Volume Shadow Copy (not supported)"
+Rdv.DeviceDesc          = "Microsoft Hyper-V Remote Desktop Virtualization"
+Rdv_Null.DeviceDesc     = "Microsoft Hyper-V Remote Desktop Virtualization (not supported)"
+

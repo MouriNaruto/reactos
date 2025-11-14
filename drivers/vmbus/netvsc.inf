@@ -1,0 +1,434 @@
+;/*++
+;
+;Copyright (c) 2006 Microsoft Corporation All rights Reserved
+;
+;Module Name:
+;
+;    netvsc.inf
+;
+;Abstract:
+;
+;    INF file for installing Network VSC miniport driver
+;
+;Installation Notes:
+;
+;    Using Devcon: Type "devcon update netvsc.inf VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}" to install
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Net
+ClassGuid={4d36e972-e325-11ce-bfc1-08002be10318}
+Provider=%MSFT%
+DriverVer=06/21/2006,6.2.9200.16384
+CatalogFile=netvsc.cat
+
+[DestinationDirs]
+DefaultDestDir          = 12
+netvsc50_System_Dir     = 11
+netvsc60_System_Dir     = 11
+netvsc_CoInstaller_Dir  = 11
+netvsc63_System_Dir     = 11
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+netvsc50.sys            = 1,,
+netvsc60.sys            = 1,,
+netvscres.dll           = 1,,
+netvsccoinstall.dll     = 1,,
+netvsc63.sys            = 1,,
+
+
+
+;*****************************************
+; netvsc Install Section
+;*****************************************
+
+[Manufacturer]
+%MSFT%=MSFT,NTx86.5.0,NTamd64.5.1,NTx86.6.0,NTamd64.6.0,NTx86.6.2,NTamd64.6.2
+
+[WMIGuidSecurity_AllReadAdminFul]
+security="O:BAG:BAD:(A;;0x12001f;;;BA)(A;;0x12001f;;;LS)(A;;0x12001f;;;NS)(A;;0x12001f;;;SY)(A;;0x12001f;;;NO)(A;;CC;;;BU)"
+
+
+;*****************************************
+; NDIS 5.0 version of the network VSC
+;*****************************************
+
+[MSFT]
+%netvsc.DeviceDesc%=netvsc50_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[MSFT.NTx86.5.0]
+%netvsc.DeviceDesc%=netvsc50_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[MSFT.NTamd64.5.1]
+%netvsc.DeviceDesc%=netvsc50_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[netvsc50_Device]
+Characteristics = 0x4   ;NCF_PHYSICAL
+BusType = 0x0           ;Internal
+CopyFiles=netvsc50_Drivers_Dir
+CopyFiles=netvsc50_System_Dir
+AddReg=netvsc_Device.AddReg,netvsc50_Device.AddReg
+*IfType = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType = 0                  ; NdisMedium802_3 
+*PhysicalMediaType = 0          ; NdisPhysicalMediumUnspecified 
+
+[netvsc50_Drivers_Dir]
+netvsc50.sys
+
+[netvsc50_System_Dir]
+netvscres.dll
+
+[netvsc50_Device.HW]
+AddReg=netvsc_Device.HW.AddReg
+
+[netvsc50_Device.Services]
+AddService = netvsc,%SPSVCINST_ASSOCSERVICE%, netvsc50_Service_Inst, netvsc_EventLog_Inst
+
+[netvsc50_Device.WMI]
+WMIInterface={437CF222-72FE-11D4-97F9-002048570337},,WMIGuidSecurity_AllReadAdminFul
+
+[netvsc50_Service_Inst]
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\netvsc50.sys
+LoadOrderGroup = Extended Base
+AddReg         = netvsc_Parameters_AddReg
+
+;*****************************************
+; NDIS 6.0 version of the network VSC
+;*****************************************
+
+[MSFT.NTx86.6.0]
+%netvsc.DeviceDesc%=netvsc60_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[MSFT.NTamd64.6.0]
+%netvsc.DeviceDesc%=netvsc60_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[netvsc60_Device]
+Characteristics = 0x4  ;NCF_PHYSICAL
+BusType = 0x0           ;Internal
+CopyFiles=netvsc60_Drivers_Dir
+CopyFiles=netvsc60_System_Dir
+AddReg=netvsc_Device.AddReg,netvsc60_Device.AddReg,netvsc_ETW.AddReg,netvsc60_ETW.AddReg,
+*IfType = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType = 0                  ; NdisMedium802_3 
+*PhysicalMediaType = 0          ; NdisPhysicalMediumUnspecified 
+
+[netvsc60_Drivers_Dir]
+netvsc60.sys
+
+[netvsc60_System_Dir]
+netvscres.dll
+
+[netvsc60_Device.HW]
+AddReg=netvsc_Device.HW.AddReg
+
+[netvsc60_Device.Services]
+AddService = netvsc,%SPSVCINST_ASSOCSERVICE%, netvsc60_Service_Inst, netvsc_EventLog_Inst
+
+[netvsc60_Device.WMI]
+WMIInterface={437CF222-72FE-11D4-97F9-002048570337},,WMIGuidSecurity_AllReadAdminFul
+
+[netvsc60_Service_Inst]
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\netvsc60.sys
+LoadOrderGroup = Extended Base
+AddReg         = netvsc_Parameters_AddReg
+
+;*****************************************
+; NDIS 6.3 version of the network VSC
+;*****************************************
+
+[MSFT.NTx86.6.2]
+%netvsc.DeviceDesc%=netvsc63_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[MSFT.NTamd64.6.2]
+%netvsc.DeviceDesc%=netvsc63_Device, VMBUS\{F8615163-DF3E-46c5-913F-F2D2F965ED0E}
+
+[netvsc63_Device]
+Characteristics = 0x4  ;NCF_PHYSICAL
+BusType = 0x0           ;Internal
+CopyFiles=netvsc63_Drivers_Dir
+CopyFiles=netvsc63_System_Dir
+AddReg=netvsc_Device.AddReg,netvsc60_Device.AddReg,netvsc_ETW.AddReg,netvsc63_ETW.AddReg,
+*IfType = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType = 0                  ; NdisMedium802_3 
+*PhysicalMediaType = 0          ; NdisPhysicalMediumUnspecified 
+
+[netvsc63_Drivers_Dir]
+netvsc63.sys
+
+[netvsc63_System_Dir]
+netvscres.dll
+
+[netvsc63_Device.HW]
+AddReg=netvsc_Device.HW.AddReg
+
+[netvsc_CoInstaller_Dir]
+NetVscCoinstall.dll
+
+[netvsc_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "NetvscCoinstall.dll,NetvscCoinstaller"
+
+[netvsc63_Device.CoInstallers]
+AddReg = netvsc_CoInstaller_AddReg
+CopyFiles = netvsc_CoInstaller_Dir
+
+[netvsc63_Device.Services]
+AddService = netvsc,%SPSVCINST_ASSOCSERVICE%, netvsc63_Service_Inst, netvsc_EventLog_Inst
+
+[netvsc63_Device.WMI]
+WMIInterface={437CF222-72FE-11D4-97F9-002048570337},,WMIGuidSecurity_AllReadAdminFul
+
+[netvsc63_Service_Inst]
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\netvsc63.sys
+LoadOrderGroup = Extended Base
+AddReg         = netvsc_Parameters_AddReg
+
+
+;*****************************************
+; Common sections to the NDIS 5.0 and 
+; NDIS 6.0 versions of the network VSC
+;*****************************************
+
+[netvsc_EventLog_Inst]
+AddReg  = netvsc_EventLog_AddReg
+
+[netvsc_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\netvscres.dll"
+HKR,,TypesSupported,0x00010001,7
+
+[netvsc_Device.AddReg]
+HKR, Ndi,               Service,            0,          "netvsc"
+HKR, Ndi\Interfaces,    UpperRange,         0,          "ndis5" 
+HKR, Ndi\Interfaces,    LowerRange,         0,          "ethernet"
+
+; Network Address
+HKR, NDI\params\NetworkAddress,         ParamDesc,      0, %NetworkAddress%
+HKR, NDI\params\NetworkAddress,         type,           0, "edit"
+HKR, NDI\params\NetworkAddress,         LimitText,      0, "12"
+HKR, NDI\params\NetworkAddress,         UpperCase,      0, "1"
+HKR, NDI\params\NetworkAddress,         default,        0, ""
+HKR, NDI\params\NetworkAddress,         optional,       0, "1"
+
+; *JumboPacket
+HKR, Ndi\Params\*JumboPacket,           ParamDesc,      0, %JumboPacket%
+HKR, Ndi\Params\*JumboPacket,           default,        0, "1514"
+HKR, Ndi\Params\*JumboPacket\Enum,      "1514",         0, %CmnDisabled%
+HKR, Ndi\Params\*JumboPacket\Enum,      "4088",         0, %Bytes4088%
+HKR, Ndi\Params\*JumboPacket\Enum,      "9014",         0, %Bytes9014%
+HKR, Ndi\Params\*JumboPacket,           type,           0, "enum"
+
+; IPv4 IP Checksum offload
+HKR, Ndi\Params\*IPChecksumOffloadIPv4,          ParamDesc,      0, %Ip4IpChecksum%
+HKR, Ndi\Params\*IPChecksumOffloadIPv4,          type,           0, "enum"
+HKR, Ndi\Params\*IPChecksumOffloadIPv4,          default,        0, "3"
+HKR, Ndi\Params\*IPChecksumOffloadIPv4\Enum,     "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*IPChecksumOffloadIPv4\Enum,     "1",            0, %OflEnabledTx%
+HKR, Ndi\Params\*IPChecksumOffloadIPv4\Enum,     "2",            0, %OflEnabledRx%
+HKR, Ndi\Params\*IPChecksumOffloadIPv4\Enum,     "3",            0, %OflEnabledTxRx%
+
+; IPv4 TCP Checksum offload
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4,         ParamDesc,      0, %Ip4TcpChecksum%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4,         type,           0, "enum"
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4,         default,        0, "3"
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4\Enum,    "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4\Enum,    "1",            0, %OflEnabledTx%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4\Enum,    "2",            0, %OflEnabledRx%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv4\Enum,    "3",            0, %OflEnabledTxRx%
+
+; IPv6 TCP Checksum offload
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6,         ParamDesc,      0, %Ip6TcpChecksum%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6,         type,           0, "enum"
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6,         default,        0, "3"
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6\Enum,    "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6\Enum,    "1",            0, %OflEnabledTx%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6\Enum,    "2",            0, %OflEnabledRx%
+HKR, Ndi\Params\*TCPChecksumOffloadIPv6\Enum,    "3",            0, %OflEnabledTxRx%
+
+; IPv4 UDP Checksum offload
+HKR, Ndi\Params\*UDPChecksumOffloadIPv4,         ParamDesc,      0, %Ip4UdpChecksum%
+HKR, Ndi\Params\*UDPChecksumOffloadIPv4,         type,           0, "enum"
+HKR, Ndi\Params\*UDPChecksumOffloadIPv4,         default,        0, "2"
+HKR, Ndi\Params\*UDPChecksumOffloadIPv4\Enum,    "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*UDPChecksumOffloadIPv4\Enum,    "2",            0, %OflEnabledRx%
+
+; IPv6 UDP Checksum offload
+HKR, Ndi\Params\*UDPChecksumOffloadIPv6,         ParamDesc,      0, %Ip6UdpChecksum%
+HKR, Ndi\Params\*UDPChecksumOffloadIPv6,         type,           0, "enum"
+HKR, Ndi\Params\*UDPChecksumOffloadIPv6,         default,        0, "2"
+HKR, Ndi\Params\*UDPChecksumOffloadIPv6\Enum,    "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*UDPChecksumOffloadIPv6\Enum,    "2",            0, %OflEnabledRx%
+
+; Receive Buffer Size
+HKR, Ndi\Params\ReceiveBufferSize,               ParamDesc,      0, %ReceiveBufferSize%
+HKR, Ndi\Params\ReceiveBufferSize,               type,           0, "enum"
+HKR, Ndi\Params\ReceiveBufferSize,               default,        0, "2048"
+HKR, Ndi\Params\ReceiveBufferSize\Enum,          "1024",         0, %1MB%
+HKR, Ndi\Params\ReceiveBufferSize\Enum,          "2048",         0, %2MB%
+HKR, Ndi\Params\ReceiveBufferSize\Enum,          "4096",         0, %4MB%
+HKR, Ndi\Params\ReceiveBufferSize\Enum,          "8192",         0, %8MB%
+
+; Send Buffer Size
+HKR, Ndi\Params\SendBufferSize,                  ParamDesc,      0, %SendBufferSize%
+HKR, Ndi\Params\SendBufferSize,                  type,           0, "enum"
+HKR, Ndi\Params\SendBufferSize,                  default,        0, "1024"
+HKR, Ndi\Params\SendBufferSize\Enum,             "1024",         0, %1MB%
+HKR, Ndi\Params\SendBufferSize\Enum,             "2048",         0, %2MB%
+HKR, Ndi\Params\SendBufferSize\Enum,             "4096",         0, %4MB%
+HKR, Ndi\Params\SendBufferSize\Enum,             "8192",         0, %8MB%
+
+[netvsc_Device.HW.AddReg]                            
+HKR,,DeviceCharacteristics,0x10001,0x0100         ; Use same security checks on relative opens
+HKR,,DedicatedProcessor,0x00010001,1              ; Use a dedicated processor for vmbus interrupts
+
+; Allow generic-all access to Built-in administrators and Local system 
+; and read/write to built-in users so they can retrieve network stats.
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GRGW;;;BU)"  
+
+[netvsc_Parameters_AddReg]
+HKR, Parameters\Wdf, DbgPrintOn,      0x00010001, 0
+HKR, Parameters\Wdf, DbgBreakOnError, 0x00010001, 0
+
+;*****************************************
+; NDIS 5.0 version additions to the network VSC
+;*****************************************
+
+[netvsc50_Device.AddReg]
+; IPv4 TCP Segmentation offload
+HKR, Ndi\Params\*LsoV1IPv4,             ParamDesc,      0, %Ip4TcpLsoV1%
+HKR, Ndi\Params\*LsoV1IPv4,             type,           0, "enum"
+HKR, Ndi\Params\*LsoV1IPv4,             default,        0, "1"
+HKR, Ndi\Params\*LsoV1IPv4\Enum,        "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*LsoV1IPv4\Enum,        "1",            0, %CmnEnabled%
+
+;*****************************************
+; NDIS 6.0 version additions to the network VSC
+;*****************************************
+
+[netvsc60_Device.AddReg]
+; IPv4 TCP Segmentation offload
+HKR, Ndi\Params\*LsoV2IPv4,             ParamDesc,      0, %Ip4TcpLsoV2%
+HKR, Ndi\Params\*LsoV2IPv4,             type,           0, "enum"
+HKR, Ndi\Params\*LsoV2IPv4,             default,        0, "1"
+HKR, Ndi\Params\*LsoV2IPv4\Enum,        "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*LsoV2IPv4\Enum,        "1",            0, %CmnEnabled%
+
+; IPv6 TCP Segmentation offload
+HKR, Ndi\Params\*LsoV2IPv6,             ParamDesc,      0, %Ip6TcpLsoV2%
+HKR, Ndi\Params\*LsoV2IPv6,             type,           0, "enum"
+HKR, Ndi\Params\*LsoV2IPv6,             default,        0, "1"
+HKR, Ndi\Params\*LsoV2IPv6\Enum,        "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*LsoV2IPv6\Enum,        "1",            0, %CmnEnabled%
+
+; IPSec capabilities (both IPv4 & IPv6)
+HKR, Ndi\Params\*IPsecOffloadV2,        ParamDesc,      0, %IPsecOffloadV2%
+HKR, Ndi\Params\*IPsecOffloadV2,        type,           0, "enum"
+HKR, Ndi\Params\*IPsecOffloadV2,        default,        0, "3"
+HKR, Ndi\Params\*IPsecOffloadV2\Enum,   "0",            0, %CmnDisabled%
+HKR, Ndi\Params\*IPsecOffloadV2\Enum,   "1",            0, %IPsecAH%
+HKR, Ndi\Params\*IPsecOffloadV2\Enum,   "2",            0, %IPsecESP%
+HKR, Ndi\Params\*IPsecOffloadV2\Enum,   "3",            0, %IPsecAHESP%
+
+[netvsc_ETW.AddReg]
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Hyper-V-NETVSC/Diagnostic","OwningPublisher",0x0,"{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Hyper-V-NETVSC/Diagnostic","Enabled",0x00010001,0
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Hyper-V-NETVSC/Diagnostic","Isolation",0x00010001,0
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Hyper-V-NETVSC/Diagnostic","ChannelAccess",0x0,"O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Hyper-V-NETVSC/Diagnostic","Type",0x00010001,2
+
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}",,0x0,"Microsoft-Windows-Hyper-V-Netvsc"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}","Enabled",0x00010001,1
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\1",,0x0,"Microsoft-Windows-Hyper-V-NETVSC/Diagnostic"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\1","Id",0x00010001,0x00000010
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\1","Flags",0x00010001,0
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\0",,0x0,"System"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\0","Id",0x00010001,0x00000008
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences\0","Flags",0x00010001,0x00000001
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}\ChannelReferences",Count,0x00010001,2
+
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},Enabled,0x00010001,1
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},EnableLevel,0x00010001,0
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},EnableProperty,0x00010001,0x00000001
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},LoggerName,0x00000000,"EventLog-System"
+; Note: The 0x000B0001 flag in the two entries below indicates the value is a REG_QWORD. This is not documented in MSDN!
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},MatchAnyKeyword,0x000B0001,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x80
+HKLM, System\CurrentControlSet\Control\WMI\Autologger\EventLog-System\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c},MatchAllKeyword,0x000B0001,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+
+[netvsc60_ETW.AddReg]
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}","ResourceFileName",0x00020000,"%SystemRoot%\system32\drivers\netvsc60.sys"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}","MessageFileName",0x00020000,"%SystemRoot%\system32\drivers\netvsc60.sys"
+
+;*****************************************
+; NDIS 6.3 version additions to the network VSC
+;*****************************************
+
+[netvsc63_ETW.AddReg]
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}","ResourceFileName",0x00020000,"%SystemRoot%\system32\drivers\netvsc63.sys"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}","MessageFileName",0x00020000,"%SystemRoot%\system32\drivers\netvsc63.sys"
+
+;*****************************************
+; Uninstallation sections
+;*****************************************
+
+[DefaultUninstall.Services]
+DelService = netvsc,0x00000200
+
+[DefaultUninstall]
+DelFiles = netvsc50_Drivers_Dir
+DelFiles = netvsc50_System_Dir
+DelFiles = netvsc60_Drivers_Dir
+DelFiles = netvsc60_System_Dir
+DelFiles = netvsc63_Drivers_Dir
+DelFiles = netvsc63_System_Dir
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE      = 0x00000002
+MSFT                        = "Microsoft"
+DiskId1                     = "Microsoft Hyper-V Network Adapter Installation Disk #1"
+;
+;Localizable
+;
+netvsc.DeviceDesc           = "Microsoft Hyper-V Network Adapter"
+NetworkAddress              = "Network Address"
+JumboPacket                 = "Jumbo Packet"
+CmdDisabled                 = "Disabled"
+Bytes4088                   = "4088 Bytes"
+Bytes9014                   = "9014 Bytes"
+Ip4IpChecksum               = "IPv4 Checksum Offload"
+Ip4TcpChecksum              = "TCP Checksum Offload (IPv4)"
+Ip6TcpChecksum              = "TCP Checksum Offload (IPv6)"
+Ip4UdpChecksum              = "UDP Checksum Offload (IPv4)"
+Ip6UdpChecksum              = "UDP Checksum Offload (IPv6)"
+Ip4TcpLsoV2                 = "Large Send Offload Version 2 (IPv4)"
+Ip6TcpLsoV2                 = "Large Send Offload Version 2 (IPv6)"
+Ip4TcpLsoV1                 = "Large Send Offload Version 1 (IPv4)"
+IPsecOffloadV2              = "IPSec Offload"
+IPsecAH                     = "Auth Header Enabled"
+IPsecESP                    = "ESP Enabled"
+IPsecAHESP                  = "Auth Header and ESP Enabled"
+CmnEnabled                  = "Enabled"
+CmnDisabled                 = "Disabled"
+OflEnabledTx                = "Tx Enabled"
+OflEnabledRx                = "Rx Enabled"
+OflEnabledTxRx              = "Rx & Tx Enabled"
+ReceiveBufferSize           = "Receive Buffer Size"
+SendBufferSize              = "Send Buffer Size"
+1MB                         = "1MB"
+2MB                         = "2MB"
+4MB                         = "4MB"
+8MB                         = "8MB"

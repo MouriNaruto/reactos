@@ -1,0 +1,172 @@
+;/*++
+;
+;Copyright (c) Microsoft Corporation
+;
+;Module Name:
+;
+;    vmbusvideo.inf
+;
+;Abstract:
+;
+;    This file is the installation information file for the 
+;    Hyper-V Synthetic Video driver pair.
+;
+;Environment:
+;
+;    Driver installation
+;
+;--*/
+
+[Version]
+Signature="$Windows NT$"
+Class=Display
+ClassGUID={4d36e968-e325-11ce-bfc1-08002be10318}
+Provider=%StdMfg%
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc 
+; creates the downlevel version of the INF file.
+;
+CatalogFile=vmbusvideo.cat
+DriverVer=06/21/2006,6.2.9200.16384
+
+[DestinationDirs]
+HyperVideo.Miniport         = 12  ; drivers
+SynthVid.Miniport           = 12  ; drivers
+SynthVid.Display            = 11  ; system32
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+;
+; Driver information
+;
+
+[Manufacturer]
+%StdMfg% = Standard,NTamd64.5,NTamd64.6.2
+
+[Standard]
+
+[Standard.NTamd64.5]
+%SynthVid.DeviceDesc% = SynthVid_Install, VMBUS\{DA0A7802-E377-4aac-8E77-0558EB1073F8}
+
+[Standard.NTamd64.6.2]
+%SynthVid.DeviceDesc% = HyperVideo_Install, VMBUS\{DA0A7802-E377-4aac-8E77-0558EB1073F8}
+
+;
+; General installation section
+;
+
+[SynthVid_Install]
+Include=msdv.inf
+FeatureScore=40
+CopyFiles=SynthVid.Miniport, SynthVid.Display
+
+[SynthVid_Install.GeneralConfigData]
+MaximumDeviceMemoryConfiguration=128
+
+[SynthVid_Install.SoftwareSettings]
+AddReg = SynthVid_SoftwareDeviceSettings
+DelReg = SynthVid_RemoveDeviceSettings
+
+[HyperVideo_Install]
+Include=msdv.inf
+FeatureScore=E3
+CopyFiles=HyperVideo.Miniport
+
+;
+; File sections
+;
+
+[SourceDisksNames]
+0 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+HyperVideo.sys = 0,,
+VMBusVideoM.sys = 0,,
+VMBusVideoD.dll = 0,,
+
+[SynthVid.Miniport]
+VMBusVideoM.sys
+
+[SynthVid.Display]
+VMBusVideoD.dll
+
+[HyperVideo.Miniport]
+HyperVideo.sys
+
+;
+; Service Installation
+;
+
+[SynthVid_Install.Services]
+AddService = SynthVid, 0x00000002, SynthVid_Service_Inst
+
+[HyperVideo_Install.Services]
+AddService = HyperVideo, 0x00000002, HyperVideo_Service_Inst
+
+;
+; Service Installation Section
+;
+
+[SynthVid_Service_Inst]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+LoadOrderGroup = Video
+ServiceBinary  = %12%\VMBusVideoM.sys
+
+[HyperVideo_Service_Inst]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+LoadOrderGroup = Video
+ServiceBinary  = %12%\HyperVideo.sys
+
+
+;
+; Registry Entries
+;
+
+[SynthVid_SoftwareDeviceSettings]
+HKR,, InstalledDisplayDrivers,     %REG_MULTI_SZ%, VMBusVideoD
+HKR,, Acceleration.Level,          %REG_DWORD%,    0
+
+[SynthVid_RemoveDeviceSettings]
+HKR,, VgaCompatible
+HKR,, InstalledDisplayDrivers
+HKR,, CapabilityOverride
+HKR,, Acceleration.Level
+
+;
+; Uninstallation sections
+;
+
+[DefaultUninstall.Services]
+DelService = SynthVid,0x00000200
+DelService = HyperVideo,0x00000200
+
+[DefaultUninstall]
+DelFiles = SynthVid.Miniport
+DelFiles = SynthVid.Display
+DelFiles = HyperVideo.Miniport
+
+;
+; String Section
+;
+
+[Strings]
+;
+; Non-Localizable Strings
+;
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+SERVICEROOT    = "System\CurrentControlSet\Services"
+DiskId1             = "Microsoft Hyper-V Video Installation Disk #1"
+StdMfg              = "Microsoft"
+;
+; Localizable Strings
+;
+SynthVid.DeviceDesc = "Microsoft Hyper-V Video"

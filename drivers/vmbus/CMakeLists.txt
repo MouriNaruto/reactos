@@ -16,4 +16,17 @@ add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}/drivers/vmstorfl.sys" DEST
 add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}/drivers/wdf01000.sys" DESTINATION reactos/system32/drivers FOR all)
 add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}/drivers/wdfldr.sys" DESTINATION reactos/system32/drivers FOR all)
 add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}/drivers/winhv.sys" DESTINATION reactos/system32/drivers FOR all)
-add_registry_inf(vmbus_registry.inf)
+#add_registry_inf(vmbus_registry.inf)
+add_driver_inf(
+    vmbus
+    gencounter.inf
+    hyperkbd.inf
+    netvsc.inf
+    s3cap.inf
+    storflt.inf
+    storvsc.inf
+    vmbus.inf
+    vmbushid.inf
+    vmbusvideo.inf
+    vmic.inf
+    vpcinull.inf)
