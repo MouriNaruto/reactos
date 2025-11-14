@@ -176,14 +176,14 @@ HalpInitializeTsc(VOID)
 
         //DbgBreakPoint();
 
+        HalpCpuClockFrequency.QuadPart = TscFrequency;
+        DPRINT1("HalpCpuClockFrequency.QuadPart %llX\n", HalpCpuClockFrequency.QuadPart);
+
         LVT_REGISTER LvtEntry;
         ULONGLONG TimerInterval;
 
         /* Calculate the Timer interval */
-        TimerInterval = ApicTimerFrequency / 1000;
-
-        HalpCpuClockFrequency.QuadPart = TscFrequency;
-        DPRINT1("HalpCpuClockFrequency.QuadPart %llX\n", HalpCpuClockFrequency.QuadPart);
+        TimerInterval = HalpCpuClockFrequency.QuadPart / 1000;
 
         /* Set the count interval */
         ApicWrite(APIC_TICR, (ULONG)TimerInterval);
