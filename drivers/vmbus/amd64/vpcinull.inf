@@ -1,0 +1,114 @@
+;/*++
+;
+;Copyright (c) 1990-2010 Microsoft Corporation All rights Reserved
+;
+;Module Name:
+;
+;    Vpci.INF
+;
+;Abstract:
+;    INF file for installing the virtual PCI driver in a VM
+;
+;--*/
+[Version]
+Signature="$WINDOWS NT$"
+Class=SYSTEM
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%MSFT%
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc
+; creates the INF file locally.
+;
+CatalogFile=vpcinull.cat
+
+DriverVer=06/21/2006,6.3.9600.19456
+[DestinationDirs]
+DefaultDestDir = 12
+
+;*****************************************
+; Vpci Install Section
+;*****************************************
+
+[Manufacturer]
+%StdMfg%=Standard,NTamd64,NTx86.5.1,NT.6,NTamd64.6,NTamd64.6.2
+
+[Standard]
+;
+; These are the Vpci pnp ids for Windows 2000
+;
+
+%Unsupported.DeviceDesc%=Vpci_Device_Unsupported_Child, vmbus\{44C4F61D-4444-4400-9D52-802E27EDE19F}
+
+[Standard.NTx86.5.1]
+;
+; These are the Vpci pnp ids for Windows XP and Windows Server 2003 (32-bit)
+;
+
+%Unsupported.DeviceDesc%=Vpci_Device_Unsupported_Child, vmbus\{44C4F61D-4444-4400-9D52-802E27EDE19F}
+
+[Standard.NTamd64]
+;
+; These are the Vpci pnp ids for Windows XP and Windows Server 2003 (64-bit)
+;
+
+%Unsupported.DeviceDesc%=Vpci_Device_Unsupported_Child, vmbus\{44C4F61D-4444-4400-9D52-802E27EDE19F}
+
+[Standard.NT.6]
+;
+; These are the Vpci pnp ids for Windows Vista and later (32-bit)
+;
+
+%Unsupported.DeviceDesc%=Vpci_Device_Unsupported_Child, vmbus\{44C4F61D-4444-4400-9D52-802E27EDE19F}
+
+[Standard.NTamd64.6]
+;
+; These are the Vpci pnp ids for Windows Vista and Windows 7 (64-bit)
+;
+
+%Unsupported.DeviceDesc%=Vpci_Device_Unsupported_Child, vmbus\{44C4F61D-4444-4400-9D52-802E27EDE19F}
+
+[Standard.NTamd64.6.2]
+; This is an empty section so that this INF doesn't match on Win8 AMD64
+
+[Vpci_Device_Win2K.NT]
+
+[Vpci_Device_Win2K.NT.HW]
+AddReg=Vpci_Device_Win2K.NT.AddReg
+
+[Vpci_Device_Unsupported_Child.NT]
+
+[Vpci_Device_Unsupported_Child.NT.HW]
+AddReg=Vpci_Device_XP.NT.AddReg
+
+[Vpci_Device_Win2K.NT.AddReg]
+HKR,,DeviceCharacteristics,0x10001,0x0100         ; Use same security checks on relative opens
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)"      ; Allow generic-all access to Built-in administrators and Local system
+                                                  ; (Network Service didn't exist in Win2K)
+
+[Vpci_Device_XP.NT.AddReg]
+HKR,,DeviceCharacteristics,0x10001,0x0100         ; Use same security checks on relative opens
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)(A;;GA;;;NS)"  ; Allow generic-all access to Built-in administrators, Local system, and network service
+
+;-------------- Service installation for Win2K child partitions
+[Vpci_Device_Win2K.NT.Services]
+AddService = ,2
+
+;-------------- Service installation for WinXP and Windows Server 2003 child partitions
+[Vpci_Device_Unsupported_Child.NT.Services]
+AddService = ,2
+
+[DefaultUninstall]
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE= 0x00000002
+MSFT = "Microsoft"
+StdMfg = "Microsoft"
+DiskId1 = "Microsoft Hyper-V PCI Bus Installation Disk #1"
+;
+;Localizable
+;
+Unsupported.DeviceDesc = "Microsoft Hyper-V PCI Bus (not supported)"
+vpci.SVCDESC = "Microsoft Hyper-V PCI Bus"

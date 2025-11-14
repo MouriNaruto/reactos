@@ -1,0 +1,152 @@
+;/*++
+;
+;Copyright (c) 1990-1999 Microsoft Corporation All rights Reserved
+;
+;Module Name:
+;
+;    wvmbus.inf
+;
+;Abstract:
+;    INF file for installing VMBus child driver
+;
+;Installation Notes:
+;    Using Devcon: Type "devcon install wvmbus.inf ACPI\vmbus" to install
+;
+;--*/
+[Version]
+Signature="$WINDOWS NT$"
+Class=SYSTEM
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%MSFT%
+;
+; Comment CatalogFile for CBB, the ';' will be removed when makefile.inc 
+; creates the INF file locally.
+;
+CatalogFile=vmbus.cat
+DriverVer=06/21/2006,6.3.9600.19456
+
+
+[DestinationDirs]
+DefaultDestDir = 12
+System_Dir = 11
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+vmbus.sys  = 1,,
+vmbkmcl.sys  = 1,,
+vmbuspipe.dll = 1,,
+vmbusres.dll = 1,,
+;winhv.sys = 1,,
+vmbuscoinstaller.dll = 1,,
+
+;*****************************************
+; VMBus Install Section
+;*****************************************
+
+[Manufacturer]
+%StdMfg%=Standard,NTamd64.5.1,NTamd64.6.2
+
+[Standard]
+
+[Standard.NTamd64.5.1]
+;
+; These are the VMbus pnp ids for Windows XP and later
+;
+%VMBus.DeviceDesc%=VMBus_Device_Child,      ACPI\VMBus
+%Support.DeviceDesc%=VMBus_Support_Device, VMBUS\SUBCHANNEL
+
+[Standard.NTamd64.6.2]
+;
+; These are the VMbus pnp ids for Windows 8 and later
+;
+%VMBus.DeviceDesc%=VMBus_Device_WIN8_Child, ACPI\VMBus
+%Support.DeviceDesc%=VMBus_Support_Device, VMBUS\SUBCHANNEL
+
+[VMBus_Device_Child.NT]
+CopyFiles=Drivers_Dir
+CopyFiles=System_Dir
+
+[VMBus_Device_Child.NT.HW]
+AddReg=VMBus_Device_Child.NT.AddReg
+
+[VMBus_Device_WIN8_Child.NT]
+CopyFiles=Drivers_Dir
+CopyFiles=System_Dir
+
+[VMBus_Device_WIN8_Child.NT.HW]
+AddReg=VMBus_Device_Child.NT.AddReg
+
+[VMBus_Device_Child.NT.AddReg]                            
+HKR,,DeviceCharacteristics,0x10001,0x0100         ; Use same security checks on relative opens
+HKR,,Security,,"D:P(A;;GA;;;BA)(A;;GA;;;SY)"      ; Allow generic-all access to Built-in administrators, Local system
+
+[VMBus_Support_Device.NT]
+
+[Drivers_Dir]
+vmbus.sys
+;winhv.sys
+vmbkmcl.sys
+
+[System_Dir]
+vmbuspipe.dll
+vmbusres.dll
+
+;-------------- Service installation for WinXP and later child partitions
+[VMBus_Device_Child.NT.Services]
+AddService = vmbus,%SPSVCINST_ASSOCSERVICE%, vmbus_Service_Inst_Child, vmbus_EventLog_Inst
+
+;-------------- Service installation for Windows 8 and later child partitions
+[VMBus_Device_WIN8_Child.NT.Services]
+AddService = vmbus,%SPSVCINST_ASSOCSERVICE%, vmbus_Service_Inst_Child, vmbus_EventLog_Inst
+
+;-------------- Service installation for the support channels
+[VMBus_Support_Device.NT.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE% ; null service
+
+; -------------- vmbus driver install sections
+[vmbus_Service_Inst_Child]
+DisplayName    = %vmbus.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 0               ; SERVICE_BOOT_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vmbus.sys
+LoadOrderGroup = System Bus Extender
+
+; -------------- vmbus eventlog setup sections
+[vmbus_EventLog_Inst]
+AddReg         = vmbus_EventLog_AddReg
+
+[vmbus_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\vmbusres.dll"
+HKR,,TypesSupported,0x00010001,7
+
+; -------------- Coinstaller section
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[CoInstaller_CopyFiles]
+VmbusCoinstaller.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "VmbusCoinstaller.dll,VmbusCoinstaller"
+
+[VMBus_Device_Child.NT.Coinstallers]
+AddReg = CoInstaller_AddReg
+CopyFiles = CoInstaller_CopyFiles
+
+[Strings]
+;
+;Non-Localizable
+;
+SPSVCINST_ASSOCSERVICE= 0x00000002
+MSFT = "Microsoft"
+StdMfg = "Microsoft"
+DiskId1 = "Microsoft Hyper-V Virtual Machine Bus Installation Disk #1"
+vmbus.SVCDESC  = "Virtual Machine Bus"
+;
+;Localizable
+;
+VMBus.DeviceDesc = "Microsoft Hyper-V Virtual Machine Bus"
+Support.DeviceDesc = "Microsoft Hyper-V VMBus Support Channel"

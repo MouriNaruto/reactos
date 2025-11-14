@@ -1,0 +1,137 @@
+;
+; storvsc .INF file
+;
+
+[Version]
+signature="$WINDOWS NT$"
+
+Class=SCSIAdapter
+ClassGuid={4d36e97b-e325-11ce-bfc1-08002be10318} 
+Provider=%Mfg%
+
+CatalogFile=vmstorage.cat
+DriverVer=06/21/2006,6.3.9600.19456
+
+[SourceDisksNames]
+1=%DiskId%
+
+[SourceDisksFiles]
+storvsc.sys = 1
+
+[DestinationDirs]
+DefaultDestDir = 12 ; system32\drivers
+
+[Manufacturer]
+%Mfg%=Microsoft,NT.5.2,NTamd64
+
+[Microsoft]
+%DeviceDesc_NULL% = storvscDriveInstall_NULL, VMBUS\{ba6163d9-04a1-4d29-b605-72e2ffb1dc7f}
+
+[Microsoft.NT.5.2]
+%DeviceDesc% = storvscDriveInstall, VMBUS\{ba6163d9-04a1-4d29-b605-72e2ffb1dc7f}
+
+[Microsoft.NTamd64]
+%DeviceDesc% = storvscDriveInstall, VMBUS\{ba6163d9-04a1-4d29-b605-72e2ffb1dc7f}
+
+[storvscDriveInstall]
+CopyFiles=SYS.CopyList
+
+[SYS.CopyList]
+storvsc.sys
+
+[storvscDriveInstall.Services]
+AddService = "storvsc",%SPSVCINST_ASSOCSERVICE%,storvsc_service_inst,storvsc_eventlog_inst
+
+[pnpsafe_pci_addreg]
+HKR,"Parameters\Device",EnableQueryAccessAlignment,0x00010001,0x00000001
+
+[bus_type_sas]
+HKR,"Parameters","BusType",0x00010001,10
+
+[storvsc_service_inst]
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_BOOT_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+LoadOrderGroup = "Base"
+ServiceBinary  = %12%\storvsc.sys
+AddReg         = pnpsafe_pci_addreg
+AddReg         = bus_type_sas
+
+[storvsc_eventlog_inst]
+AddReg=storvsc_eventlog_addreg
+
+[storvsc_eventlog_addreg]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+[storvscDriveInstall_Null.Services]
+AddService = ,%SPSVCINST_ASSOCSERVICE%  ; null service install
+
+[storvscDriveInstall.HW]
+AddReg=storvsc_vmbus_addreg
+
+[storvsc_vmbus_addreg]
+HKR,,DedicatedProcessor,0x00010001,1
+
+;
+; Uninstallation sections
+;
+
+[DefaultUninstall.Services]
+DelService = storvsc,0x00000200
+
+[DefaultUninstall]
+DelFiles = SYS.CopyList
+
+
+[Strings]
+;Localizable
+DeviceDesc = "Microsoft Hyper-V SCSI Controller"
+DeviceDesc_NULL = "Microsoft Hyper-V SCSI Controller (not supported)"
+
+;Non-Localizable
+Mfg = "Microsoft"
+DiskId = "Microsoft Hyper-V SCSI Controller Installation Disk #1"
+ClassName = "Virtual Adapter"
+
+
+;
+; The "standard" defines
+;
+SPSVCINST_TAGTOFRONT               = 0x00000001
+SPSVCINST_ASSOCSERVICE             = 0x00000002
+SPSVCINST_DELETEEVENTLOGENTRY      = 0x00000004
+SPSVCINST_NOCLOBBER_DISPLAYNAME    = 0x00000008
+SPSVCINST_NOCLOBBER_STARTTYPE      = 0x00000010
+SPSVCINST_NOCLOBBER_ERRORCONTROL   = 0x00000020
+SPSVCINST_NOCLOBBER_LOADORDERGROUP = 0x00000040
+SPSVCINST_NOCLOBBER_DEPENDENCIES   = 0x00000080
+SPSVCINST_NOCLOBBER_DESCRIPTION    = 0x00000100
+
+COPYFLG_WARN_IF_SKIP         = 0x00000001
+COPYFLG_NOSKIP               = 0x00000002
+COPYFLG_NOVERSIONCHECK       = 0x00000004
+COPYFLG_FORCE_FILE_IN_USE    = 0x00000008
+COPYFLG_NO_OVERWRITE         = 0x00000010
+COPYFLG_NO_VERSION_DIALOG    = 0x00000020
+COPYFLG_OVERWRITE_OLDER_ONLY = 0x00000040
+COPYFLG_REPLACEONLY          = 0x00000400
+COPYFLG_REPLACE_BOOT_FILE    = 0x00001000
+COPYFLG_NOPRUNE              = 0x00002000
+
+SERVICE_KERNEL_DRIVER      = 0x00000001
+SERVICE_FILE_SYSTEM_DRIVER = 0x00000002
+
+SERVICE_BOOT_START   = 0x00000000
+SERVICE_SYSTEM_START = 0x00000001
+SERVICE_AUTO_START   = 0x00000002
+SERVICE_DEMAND_START = 0x00000003
+SERVICE_DISABLED     = 0x00000004
+
+SERVICE_ERROR_IGNORE   = 0x00000000
+SERVICE_ERROR_NORMAL   = 0x00000001
+SERVICE_ERROR_SEVERE   = 0x00000002
+SERVICE_ERROR_CRITICAL = 0x00000003
+
+REG_DWORD=0x00010001
+REG_EXPAND_SZ=0x00020000
